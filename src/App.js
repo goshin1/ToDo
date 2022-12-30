@@ -3,10 +3,10 @@ import './App.css';
 
 function ToDoForm(props){
   return (
-    <div>
+    <div id='formDiv'>
       <form>
         <p>
-          <input type="submit" value="To Do List!" onSubmit={event=>{
+          <input type="submit" value="To Do List!" onClick={event=>{
             event.preventDefault();
           }}/>
         </p>
@@ -23,7 +23,8 @@ function List(props){
   const lis = [];
   const calenders = props.calenders;
   for(let i = 0; i < calenders.length; i++){
-    lis.push(<ListBlock key={calenders[i].id} num={calenders[i].id} todo={calenders[i].todo} detail={calenders[i].detail} date={calenders[i].date} time={calenders[i].time}></ListBlock>)
+    lis.push(<ListBlock key={calenders[i].id} num={calenders[i].id} todo={calenders[i].todo} detail={calenders[i].detail} 
+                  date={calenders[i].date} time={calenders[i].time}></ListBlock>)
   }
 
   return (
@@ -35,17 +36,18 @@ function List(props){
 
 function ListBlock(props){
   return (
-    <li key={props.num}>
-      <div className="listTop">
-        <button onClick={()=>{
-
-        }}></button>
-        <span>{props.todo}</span>
-        <button onClick={()=>{
+    <li className="block" key={props.num}>
+      <div className="blockTop">
+        <button className='check' onClick={()=>{
           
         }}></button>
+        <span>{props.todo}</span>
+        <button className='plus' onClick={(event)=>{
+          let parent = event.target.parentElement;
+        
+        }}></button>
       </div>
-      <div className="listBottom">
+      <div className="blockBottom">
         <button>{props.date}{props.time}</button>
         <p>{props.detail}</p>
       </div>

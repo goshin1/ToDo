@@ -1,38 +1,122 @@
+*{
+  list-style: none;
+}
+
+body{
+  background-color: #f4f4f4;
+}
+
 .App {
+  margin-top: -20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+input{
+  transition: all 0.5s;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#formDiv{
+  margin: 0 auto;
+  width: 300px;
+  height: 400px;
+  background-color: #fff;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.09);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#formDiv input{
+  border: none;
 }
 
-.App-link {
-  color: #61dafb;
+#formDiv input[type=submit]{
+  margin-top: 40px;
+  background-color: rgb(255,255,255);
+  border : 1px solid rgb(104, 177, 255);
+  color: rgb(104, 177, 255);
+  width: 260px;
+  height: 40px;
+  font-size: 28px;
+  font-weight: bold;
+  border-radius: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#formDiv input[type=submit]:active{
+  background-color: rgb(104, 177, 255);
+  border : 1px solid rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
+}
+
+#formDiv input[type=text], textarea{
+  width: 210px;
+  margin : 10px auto;
+  border : none;
+  border-bottom: 1px solid rgb(234, 234, 234);
+  color: rgb(104, 177, 255);
+}
+
+
+label[for=date], label[for=time]{
+  color : rgb(104, 177, 255);
+}
+
+input[type=date], input[type=time]{
+  margin: 10px auto;
+  width: 170px;
+  margin-left: 10px;
+  color : rgb(104, 177, 255);
+}
+input::placeholder , textarea::placeholder{
+  color : rgb(234, 234, 234);
+}
+
+#list{
+  margin: 50px auto;
+  background-color: #ff0;
+  width: 300px;
+  min-height: 300px;
+  height: 100%;
+}
+
+.block{
+  transition: all 0.5s;
+  width: 300px;
+  height: 40px;
+  background-color: #fff;
+  border-bottom: 1px solid red;
+  overflow: hidden;
+}
+
+.blockTop{
+  width: 300px;
+  line-height: 40px;
+}
+
+.check{
+  margin: 10px 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  border : 1px solid rgb(104, 177, 255);
+  background-color: rgba(0, 0, 0, 0);
+  float: left;
+}
+
+.blockTop span{
+  text-align: left;
+  width: 180px;
+  float: left;
+  display: block;
+  font-size: 12px;
+}
+
+.plus{
+  margin: 10px 20px;
+  width: 20px;
+  height: 20px;
+  float: left;
+}
+
+.blockBottom{
+  width: 300px;
 }
