@@ -35,20 +35,40 @@ function List(props){
 }
 
 function ListBlock(props){
+    let left = {float : "left", marginLeft:"25px"};
+    let right = {float : "right", marginRight : "25px"};
   return (
-    <li className="block" key={props.num}>
+    <li className="block" key={props.num} onClick={(event)=>{
+      let current = event.currentTarget;
+      let child = current.children[0];
+      // 클릭 시 세부 정보가 보인다.
+      if(current.style.height === "150px"){
+        current.style.height = "40px";
+        current.style.overflow = "hidden";
+        child.className = "blockTop";
+        child.children[0].style.backgroundColor = "rgb(255, 255, 255)";
+        child.children[0].style.border = "1px solid rgb(104, 177, 255)";
+      } else {
+        current.style.height = "150px";
+        current.style.overflowY = "auto";
+        child.className = "blockTopActive";
+        child.children[0].style.backgroundColor = "rgb(104, 177, 255)";
+        child.children[0].style.border = "1px solid rgb(234, 234, 234)";
+      }
+      
+    }}>
       <div className="blockTop">
         <button className='check' onClick={()=>{
           
         }}></button>
         <span>{props.todo}</span>
-        <button className='plus' onClick={(event)=>{
-          let parent = event.target.parentElement;
         
-        }}></button>
       </div>
       <div className="blockBottom">
-        <button>{props.date}{props.time}</button>
+        <div className='dateBlock'>
+          <span style={left}>{props.date}</span>
+          <span style={right}>{props.time}</span>
+        </div>
         <p>{props.detail}</p>
       </div>
     </li>
@@ -57,8 +77,10 @@ function ListBlock(props){
 
 function App() {
   const calenders = [
-    {id:1, todo : '해야 할 일', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'},
-    {id:2, todo : '해야 할 일', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'}
+    {id:1, todo : '해야 할 일1', detail : '세부적인 내용ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', date : '2022-12-29', time : '오후 03 : 12'},
+    {id:2, todo : '해야 할 일2', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'},
+    {id:3, todo : '해야 할 일3', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'},
+    {id:4, todo : '해야 할 일4', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'}
   ];
 
   return (
