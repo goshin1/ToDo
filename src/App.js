@@ -1,19 +1,43 @@
 import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
 
 function ToDoForm(props){
   return (
     <div id='formDiv'>
-      <form>
+      <form onSubmit={(event)=>{
+        event.preventDefault();
+        let target = event.target;
+        if(target.todo.value === null || target.todo.value === '' || target.todo.value === ' '){
+          alert('해야할 일을 입력해주세요.');
+          return;
+        }
+        
+        let selDate = new Date(target.date.value);
+        if(target.date.value === ''){
+          alert("시간을 입력해주세요.");
+          return;
+        }
+        let now = new Date();
+        if ((now.getFullYear() - selDate.getFullYear()) > 0 || (now.getMonth() - selDate.getMonth()) > 0 
+        || (now.getDay() - selDate.getDay()) > 0){
+          alert("현재 이후를 선택해주세요.")
+          return
+        } else if ((now.getFullYear() - selDate.getFullYear()) === 0 && (now.getMonth() - selDate.getMonth()) === 0 
+        && (now.getDay() - selDate.getDay()) === 0 && (now.getHours() - selDate.getHours()) > 0 && (now.getMinutes() - selDate.getMinutes())){
+          alert("현재 이후를 선택해주세요.")
+          return
+        }
+
+        let time = selDate.toTimeString().substring(0, 9);
+        props.onCalender(target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
+      }}>
         <p>
-          <input type="submit" value="To Do List!" onClick={event=>{
-            event.preventDefault();
-          }}/>
+          <input type="submit" value="To Do List!"/>
         </p>
         <label htmlFor="todo"><input id="todo" type="text" name="todo" placeholder="To Do"/></label><br/>
         <label htmlFor="detail" ><textarea id="detail" name="detail" placeholder="Detail content" cols="22" rows="5"></textarea></label><br/>
-        <label htmlFor="date">Date <input id="date" type="date"/></label><br/>
-        <label htmlFor="time">Time <input id="time" type="time"  /></label>
+        <label htmlFor="date">Date <input id="date" type="datetime-local"/></label>
       </form>
     </div>
   );
@@ -33,6 +57,11 @@ function List(props){
     </div>
   );
 }
+
+function dateCheck(date, time){
+
+}
+
 
 function ListBlock(props){
     let left = {float : "left", marginLeft:"25px"};
@@ -65,7 +94,10 @@ function ListBlock(props){
         
       </div>
       <div className="blockBottom">
-        <div className='dateBlock'>
+        <div className='dateBlock' onClick={()=>{
+          let test = new Date(props.date + " " + props.time);
+          alert(test);
+        }}>
           <span style={left}>{props.date}</span>
           <span style={right}>{props.time}</span>
         </div>
@@ -75,17 +107,26 @@ function ListBlock(props){
   );
 }
 
+
+
+
+
 function App() {
-  const calenders = [
-    {id:1, todo : '해야 할 일1', detail : '세부적인 내용ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd', date : '2022-12-29', time : '오후 03 : 12'},
-    {id:2, todo : '해야 할 일2', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'},
-    {id:3, todo : '해야 할 일3', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'},
-    {id:4, todo : '해야 할 일4', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'}
+  const [id, nextId] = useState(2);
+  const lis = [
+    {id:1, todo : '해야 할 일1', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'}
   ];
+  const [calenders, setCalenders] = useState(lis);
+  
 
   return (
     <div className="App">
-      <ToDoForm></ToDoForm>
+      <ToDoForm onCalender={(todo, detail, date, time)=>{
+        let added = {id : id, todo : todo, detail : detail, date : date, time : time}
+        calenders.push(added);
+        setCalenders(calenders);
+        nextId(id + 1);
+      }}></ToDoForm>
       <List calenders={calenders}></List>
     </div>
   );
