@@ -19,16 +19,16 @@ function ToDoForm(props){
           return;
         }
         let now = new Date();
-        if ((now.getFullYear() - selDate.getFullYear()) > 0 || (now.getMonth() - selDate.getMonth()) > 0 
-        || (now.getDay() - selDate.getDay()) > 0){
-          alert("현재 이후를 선택해주세요.")
-          return
+        if ((now.getFullYear() - selDate.getFullYear()) > 0 || (now.getFullYear() - selDate.getFullYear() <= 0 && now.getMonth() - selDate.getMonth() > 0)
+        || (now.getFullYear() - selDate.getFullYear() <= 0 && now.getMonth() - selDate.getMonth() <= 0 && now.getDay() - selDate.getDay() > 0)){
+          alert("현재 이후를 선택해주세요.1");
+          return;
         } else if ((now.getFullYear() - selDate.getFullYear()) === 0 && (now.getMonth() - selDate.getMonth()) === 0 
         && (now.getDay() - selDate.getDay()) === 0 && (now.getHours() - selDate.getHours()) > 0 && (now.getMinutes() - selDate.getMinutes())){
-          alert("현재 이후를 선택해주세요.")
-          return
+          alert("현재 이후를 선택해주세요.2");
+          return;
         }
-
+      
         let time = selDate.toTimeString().substring(0, 9);
         props.onCalender(target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
       }}>
@@ -48,7 +48,9 @@ function List(props){
   const calenders = props.calenders;
   for(let i = 0; i < calenders.length; i++){
     lis.push(<ListBlock key={calenders[i].id} num={calenders[i].id} todo={calenders[i].todo} detail={calenders[i].detail} 
-                  date={calenders[i].date} time={calenders[i].time}></ListBlock>)
+                  date={calenders[i].date} time={calenders[i].time} onDelect={(id)=>{
+                    props.onDelect(id);
+                  }}></ListBlock>)
   }
 
   return (
@@ -58,18 +60,21 @@ function List(props){
   );
 }
 
-function dateCheck(date, time){
-
-}
-
-
 function ListBlock(props){
     let left = {float : "left", marginLeft:"25px"};
     let right = {float : "right", marginRight : "25px"};
+    let [limitDate, setLimitDate] = useState(props.date);
+    let [limitTime, setLimitTime] = useState(props.time);
+
+    let months = [
+      31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+    ];
+
   return (
     <li className="block" key={props.num} onClick={(event)=>{
       let current = event.currentTarget;
       let child = current.children[0];
+
       // 클릭 시 세부 정보가 보인다.
       if(current.style.height === "150px"){
         current.style.height = "40px";
@@ -83,23 +88,44 @@ function ListBlock(props){
         child.className = "blockTopActive";
         child.children[0].style.backgroundColor = "rgb(104, 177, 255)";
         child.children[0].style.border = "1px solid rgb(234, 234, 234)";
+        
       }
       
     }}>
       <div className="blockTop">
-        <button className='check' onClick={()=>{
-          
-        }}></button>
+        <div className='check' onClick={()=>{
+          props.onDelect(props.num);
+        }}></div>
         <span>{props.todo}</span>
         
       </div>
       <div className="blockBottom">
-        <div className='dateBlock' onClick={()=>{
+        <div className='dateBlock' onMouseOver={()=>{
+          let now = new Date();
           let test = new Date(props.date + " " + props.time);
-          alert(test);
+          let diff = test - now;
+          let cSec = 1000;
+          let cMin = cSec * 60;
+          let cHour = cMin * 60;
+          let cDay = cHour * 24;
+          let cMonth = cDay * 30;
+          let cYear = cMonth * 12;
+          const diffYear = Math.floor((diff / cYear));
+          const diffMonth = Math.floor((diff / cMonth) % 12);
+          const diffDay = Math.floor((diff / cDay) % months[test.getMonth()]);
+    
+          const diffHour = Math.floor((diff / cHour) % 24);
+          const diffMin = Math.floor((diff / cMin) % 60);
+          const diffSec = Math.floor(diff / cSec % 60);
+          setLimitDate(diffYear + ". " + diffMonth + ". " + diffDay);
+          setLimitTime(diffHour + ":" + diffMin + ":" + diffSec);
+        }} onMouseOut={()=>{
+          setLimitDate(props.date);
+          setLimitTime(props.time);
+
         }}>
-          <span style={left}>{props.date}</span>
-          <span style={right}>{props.time}</span>
+          <span style={left}>{limitDate}</span>
+          <span style={right}>{limitTime}</span>
         </div>
         <p>{props.detail}</p>
       </div>
@@ -112,10 +138,8 @@ function ListBlock(props){
 
 
 function App() {
-  const [id, nextId] = useState(2);
-  const lis = [
-    {id:1, todo : '해야 할 일1', detail : '세부적인 내용', date : '2022-12-29', time : '오후 03 : 12'}
-  ];
+  const [id, nextId] = useState(1);
+  const lis = [];
   const [calenders, setCalenders] = useState(lis);
   
 
@@ -127,7 +151,15 @@ function App() {
         setCalenders(calenders);
         nextId(id + 1);
       }}></ToDoForm>
-      <List calenders={calenders}></List>
+      <List calenders={calenders} onDelect={(id)=>{
+        let newLis = [];
+        for(let i = 0; i < calenders.length; i++){
+          if(calenders[i].id !== id){
+            newLis.push(calenders[i]);
+          }
+        }
+        setCalenders(newLis);
+      }}></List>
     </div>
   );
 }
