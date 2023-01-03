@@ -135,8 +135,21 @@ input::placeholder , textarea::placeholder{
   width: 300px;
 }
 
+.dateBox{
+  margin: 0 auto;
+  width: 260px;
+  height: 35px;
+  overflow: hidden;
+}
+
+.dateSlide{
+  width: 260px;
+  height: 80px;
+  
+}
+
 .dateBlock{
-  margin: 0 auto 10px;
+  margin-bottom: 10px;
   width: 250px;
   height: 30px;
   line-height: 30px;
@@ -144,6 +157,7 @@ input::placeholder , textarea::placeholder{
   border-radius: 10px;
   font-size: 13px;
   cursor : pointer;
+  float: left;
 }
 
 .dateBlock:hover{

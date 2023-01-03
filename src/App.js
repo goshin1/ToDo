@@ -1,8 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
 import {useState} from 'react';
 
 function ToDoForm(props){
+  const dayMap = {
+    
+  }
+
   return (
     <div id='formDiv'>
       <form onSubmit={(event)=>{
@@ -19,15 +22,11 @@ function ToDoForm(props){
           return;
         }
         let now = new Date();
-        if ((now.getFullYear() - selDate.getFullYear()) > 0 || (now.getFullYear() - selDate.getFullYear() <= 0 && now.getMonth() - selDate.getMonth() > 0)
-        || (now.getFullYear() - selDate.getFullYear() <= 0 && now.getMonth() - selDate.getMonth() <= 0 && now.getDay() - selDate.getDay() > 0)){
-          alert("현재 이후를 선택해주세요.1");
-          return;
-        } else if ((now.getFullYear() - selDate.getFullYear()) === 0 && (now.getMonth() - selDate.getMonth()) === 0 
-        && (now.getDay() - selDate.getDay()) === 0 && (now.getHours() - selDate.getHours()) > 0 && (now.getMinutes() - selDate.getMinutes())){
-          alert("현재 이후를 선택해주세요.2");
+        if(selDate - now <= 0){
+          alert("현재 이후를 선택해주세요.")
           return;
         }
+
       
         let time = selDate.toTimeString().substring(0, 9);
         props.onCalender(target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
@@ -70,6 +69,30 @@ function ListBlock(props){
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     ];
 
+
+    function timeOut(){
+      let now = new Date();
+      let test = new Date(props.date + " " + props.time);
+      let diff = test - now;
+      let cSec = 1000;
+      let cMin = cSec * 60;
+      let cHour = cMin * 60;
+      let cDay = cHour * 24;
+      let cMonth = cDay * 30;
+      let cYear = cMonth * 12;
+      const diffYear = Math.floor((diff / cYear));
+      const diffMonth = Math.floor((diff / cMonth) % 12);
+      const diffDay = Math.floor((diff / cDay) % months[test.getMonth()]);
+    
+      const diffHour = Math.floor((diff / cHour) % 24);
+      const diffMin = Math.floor((diff / cMin) % 60);
+      const diffSec = Math.floor(diff / cSec % 60);
+      setLimitDate(diffYear + ". " + diffMonth + ". " + diffDay);
+      setLimitTime(diffHour + ":" + diffMin + ":" + diffSec);
+    }
+
+    let timeMove = setInterval(timeOut, 500);
+
   return (
     <li className="block" key={props.num} onClick={(event)=>{
       let current = event.currentTarget;
@@ -100,32 +123,17 @@ function ListBlock(props){
         
       </div>
       <div className="blockBottom">
-        <div className='dateBlock' onMouseOver={()=>{
-          let now = new Date();
-          let test = new Date(props.date + " " + props.time);
-          let diff = test - now;
-          let cSec = 1000;
-          let cMin = cSec * 60;
-          let cHour = cMin * 60;
-          let cDay = cHour * 24;
-          let cMonth = cDay * 30;
-          let cYear = cMonth * 12;
-          const diffYear = Math.floor((diff / cYear));
-          const diffMonth = Math.floor((diff / cMonth) % 12);
-          const diffDay = Math.floor((diff / cDay) % months[test.getMonth()]);
-    
-          const diffHour = Math.floor((diff / cHour) % 24);
-          const diffMin = Math.floor((diff / cMin) % 60);
-          const diffSec = Math.floor(diff / cSec % 60);
-          setLimitDate(diffYear + ". " + diffMonth + ". " + diffDay);
-          setLimitTime(diffHour + ":" + diffMin + ":" + diffSec);
-        }} onMouseOut={()=>{
-          setLimitDate(props.date);
-          setLimitTime(props.time);
-
-        }}>
-          <span style={left}>{limitDate}</span>
-          <span style={right}>{limitTime}</span>
+        <div className='dateBox'>
+          <div className='dateSlide'>
+            <div className='dateBlock'>
+              <span style={left}>{limitDate}</span>
+              <span style={right}>{limitTime}</span>
+            </div>
+            <div className='dateBlock'>
+              <span style={left}>{props.date}</span>
+              <span style={right}>{props.time}</span>
+            </div>
+          </div>
         </div>
         <p>{props.detail}</p>
       </div>
