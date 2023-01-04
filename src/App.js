@@ -75,36 +75,29 @@ function ListBlock(props){
     function timeOut(){
       let now = new Date();
       let test = new Date(props.date + " " + props.time);
-      let diff = test - now;
-      let cSec = 1000;
-      let cMin = cSec * 60;
-      let cHour = cMin * 60;
-      let cDay = cHour * 24;
-      let cMonth = cDay * 30;
-      let cYear = cMonth * 12;
-      const diffYear = Math.floor((diff / cYear));
-      const diffMonth = Math.floor((diff / cMonth) % 12);
-      const diffDay = Math.floor((diff / cDay) % months[test.getMonth()]);
-    
-      const diffHour = Math.floor((diff / cHour) % 24);
-      const diffMin = Math.floor((diff / cMin) % 60);
-      const diffSec = Math.floor(diff / cSec % 60);
-      setLimitDate(diffYear + ". " + diffMonth + ". " + diffDay);
-      setLimitTime(diffHour + ":" + diffMin + ":" + diffSec);
+      if(test - now > 0){
+        let diff = test - now;
+        let cSec = 1000;
+        let cMin = cSec * 60;
+        let cHour = cMin * 60;
+        let cDay = cHour * 24;
+        let cMonth = cDay * 30;
+        let cYear = cMonth * 12;
+        const diffYear = Math.floor((diff / cYear));
+        const diffMonth = Math.floor((diff / cMonth) % 12);
+        const diffDay = Math.floor((diff / cDay) % months[test.getMonth()]);
+      
+        const diffHour = Math.floor((diff / cHour) % 24);
+        const diffMin = Math.floor((diff / cMin) % 60);
+        const diffSec = Math.floor(diff / cSec % 60);
+        setLimitDate(diffYear + ". " + diffMonth + ". " + diffDay);
+        setLimitTime(diffHour + ":" + diffMin + ":" + diffSec);
+      }
     }
 
     let timeMove = setInterval(timeOut, 500);
 
-    function timeOver(){
-      let now = new Date();
-      let test = new Date(props.date + " " + props.time);
-      if((test - now) < 1){
-        clearInterval(timeMove);
-        props.onDelect(props.num);
-      }
-    }
 
-    let timeCheck = setInterval(timeOver, 500);
   return (
     <li className="block" key={props.num} onDoubleClick={(event)=>{
       let current = event.currentTarget;
