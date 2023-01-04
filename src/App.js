@@ -126,12 +126,12 @@ function ListBlock(props){
         <div className='dateBox'>
           <div className='dateSlide'>
             <div className='dateBlock'>
-              <span style={left}>{limitDate}</span>
-              <span style={right}>{limitTime}</span>
-            </div>
-            <div className='dateBlock'>
               <span style={left}>{props.date}</span>
               <span style={right}>{props.time}</span>
+            </div>
+            <div className='dateBlock'>
+              <span style={left}>{limitDate}</span>
+              <span style={right}>{limitTime}</span>
             </div>
           </div>
         </div>
