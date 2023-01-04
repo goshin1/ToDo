@@ -158,6 +158,19 @@ function App() {
   const lis = [];
   const [calenders, setCalenders] = useState(lis);
   
+  function overSchedule(){
+    let now = new Date();
+    let newlis = [];
+    for(let i = 0; i < calenders.length; i++){
+      let test = new Date(calenders[i].date + " " + calenders[i].time);
+      if(test - now > 0){
+        newlis.push(calenders[i]);
+      }
+    }
+    setCalenders(newlis);
+  }
+
+  
 
   return (
     <div className="App">
