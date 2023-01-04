@@ -69,6 +69,8 @@ function ListBlock(props){
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     ];
 
+    let colorCheck = false;
+
 
     function timeOut(){
       let now = new Date();
@@ -93,12 +95,21 @@ function ListBlock(props){
 
     let timeMove = setInterval(timeOut, 500);
 
+    function timeOver(){
+      let now = new Date();
+      let test = new Date(props.date + " " + props.time);
+      if((test - now) < 1){
+        clearInterval(timeMove);
+        props.onDelect(props.num);
+      }
+    }
+
+    let timeCheck = setInterval(timeOver, 500);
   return (
-    <li className="block" key={props.num} onClick={(event)=>{
+    <li className="block" key={props.num} onDoubleClick={(event)=>{
       let current = event.currentTarget;
       let child = current.children[0];
 
-      // 클릭 시 세부 정보가 보인다.
       if(current.style.height === "150px"){
         current.style.height = "40px";
         current.style.overflow = "hidden";
@@ -111,9 +122,7 @@ function ListBlock(props){
         child.className = "blockTopActive";
         child.children[0].style.backgroundColor = "rgb(104, 177, 255)";
         child.children[0].style.border = "1px solid rgb(234, 234, 234)";
-        
       }
-      
     }}>
       <div className="blockTop">
         <div className='check' onClick={()=>{
@@ -124,7 +133,13 @@ function ListBlock(props){
       </div>
       <div className="blockBottom">
         <div className='dateBox'>
-          <div className='dateSlide'>
+          <div className='dateSlide' onClick={event=>{
+            if(event.currentTarget.style.marginTop !== '-40px'){
+              event.currentTarget.style.marginTop = '-40px';
+            } else {
+              event.currentTarget.style.marginTop = "0px";
+            }
+          }}>
             <div className='dateBlock'>
               <span style={left}>{props.date}</span>
               <span style={right}>{props.time}</span>

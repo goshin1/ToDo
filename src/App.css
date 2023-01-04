@@ -82,7 +82,7 @@ input::placeholder , textarea::placeholder{
 .block{
   margin: 0 auto;
   transition: all 0.5s;
-  width: 300px;
+  width: 330px;
   height: 40px;
   background-color: #fff;
   border-bottom: 1px solid rgb(234, 234, 234);
@@ -93,7 +93,7 @@ input::placeholder , textarea::placeholder{
 }
 
 .blockTop{
-  width: 300px;
+  width: 330px;
   height: 40px;
   line-height: 40px;
   position:sticky;
@@ -103,7 +103,7 @@ input::placeholder , textarea::placeholder{
 
 .blockTopActive{
   background-color: rgb(104, 177, 255);
-  width: 300px;
+  width: 330px;
   height: 40px;
   line-height: 40px;
   color: #fff;
@@ -127,12 +127,12 @@ input::placeholder , textarea::placeholder{
   width: 180px;
   float: left;
   display: block;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 .blockBottom{
   margin-top: 20px;
-  width: 300px;
+  width: 330px;
 }
 
 .dateBox{
@@ -143,17 +143,14 @@ input::placeholder , textarea::placeholder{
 }
 
 .dateSlide{
+  margin-top: 0px;
   transition: all 0.3s;
   width: 260px;
   height: 80px;
 }
 
-.dateSlide:hover{
-  margin-top: -40px;
-}
-
 .dateBlock{
-  margin-bottom: 10px;
+  margin: 0 auto 10px;
   width: 250px;
   height: 30px;
   line-height: 30px;
@@ -161,5 +158,5 @@ input::placeholder , textarea::placeholder{
   border-radius: 10px;
   font-size: 13px;
   cursor : pointer;
-  float: left;
+  
 }
