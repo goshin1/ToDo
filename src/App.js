@@ -1,11 +1,8 @@
 import './App.css';
 import {useState} from 'react';
 
+// 일정 입력 폼
 function ToDoForm(props){
-  const dayMap = {
-    
-  }
-
   return (
     <div id='formDiv'>
       <form onSubmit={(event)=>{
@@ -42,6 +39,8 @@ function ToDoForm(props){
   );
 }
 
+
+// 일정이 올라온 목록 태그
 function List(props){
   const lis = [];
   const calenders = props.calenders;
@@ -59,6 +58,7 @@ function List(props){
   );
 }
 
+// 일정 블록
 function ListBlock(props){
     let left = {float : "left", marginLeft:"25px"};
     let right = {float : "right", marginRight : "25px"};
@@ -159,7 +159,7 @@ function ListBlock(props){
 
 
 
-
+// 실행 앱
 function App() {
   const [id, nextId] = useState(1);
   const lis = [];
