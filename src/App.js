@@ -4,7 +4,7 @@ import {useState} from 'react';
 // 일정 입력 폼
 function ToDoForm(props){
   return (
-    <div id='formDiv'>
+    <div className='formDiv'>
       <form onSubmit={(event)=>{
         event.preventDefault();
         let target = event.target;
@@ -48,6 +48,8 @@ function List(props){
     lis.push(<ListBlock key={calenders[i].id} num={calenders[i].id} todo={calenders[i].todo} detail={calenders[i].detail} 
                   date={calenders[i].date} time={calenders[i].time} onDelect={(id)=>{
                     props.onDelect(id);
+                  }} onUpdate={(id)=>{
+                    props.onUpdate(id);
                   }}></ListBlock>)
   }
 
@@ -70,7 +72,7 @@ function ListBlock(props){
     ];
 
     let colorCheck = false;
-
+    let check = true;
 
     function timeOut(){
       let now = new Date();
@@ -92,37 +94,56 @@ function ListBlock(props){
         const diffSec = Math.floor(diff / cSec % 60);
         setLimitDate(diffYear + ". " + diffMonth + ". " + diffDay);
         setLimitTime(diffHour + ":" + diffMin + ":" + diffSec);
+      } else {
+        check = false;
       }
     }
 
     let timeMove = setInterval(timeOut, 500);
-
-
+    
   return (
     <li className="block" key={props.num} onDoubleClick={(event)=>{
       let current = event.currentTarget;
       let child = current.children[0];
-
-      if(current.style.height === "150px"){
-        current.style.height = "40px";
-        current.style.overflow = "hidden";
-        child.className = "blockTop";
-        child.children[0].style.backgroundColor = "rgb(255, 255, 255)";
-        child.children[0].style.border = "1px solid rgb(104, 177, 255)";
-      } else {
+      if(check === false){
         current.style.height = "150px";
         current.style.overflowY = "auto";
-        child.className = "blockTopActive";
-        child.children[0].style.backgroundColor = "rgb(104, 177, 255)";
+        child.style.color = "rgb(255, 255, 255)";
+        child.style.backgroundColor = "rgb(255, 49, 49)";
+        child.children[0].style.backgroundColor = "rgb(255, 49, 49)";
         child.children[0].style.border = "1px solid rgb(234, 234, 234)";
       }
+      else{
+        if(current.style.height === "150px"){
+          current.style.height = "40px";
+          current.style.overflow = "hidden";
+          child.className = "blockTop";
+          child.children[0].style.backgroundColor = "rgb(255, 255, 255)";
+          child.children[0].style.border = "1px solid rgb(104, 177, 255)";
+          child.children[2].style.backgroundColor = "rgb(255, 255, 255)";
+          child.children[2].style.border = "1px solid rgb(104, 177, 255)";
+          child.children[2].style.color = 'rgb(104, 177, 255)';
+        } else {
+          current.style.height = "150px";
+          current.style.overflowY = "auto";
+          child.className = "blockTopActive";
+          child.children[0].style.backgroundColor = "rgb(104, 177, 255)";
+          child.children[0].style.border = "1px solid rgb(234, 234, 234)";
+          child.children[2].style.backgroundColor = "rgb(104, 177, 255)";
+          child.children[2].style.border = "1px solid rgb(234, 234, 234)";
+          child.children[2].style.color = "rgb(255, 255, 255)";
+        }
+      }
+      
     }}>
       <div className="blockTop">
         <div className='check' onClick={()=>{
           props.onDelect(props.num);
         }}></div>
         <span>{props.todo}</span>
-        
+        <div className='update' onClick={()=>{
+          props.onUpdate(props.num);
+        }} >Update</div>
       </div>
       <div className="blockBottom">
         <div className='dateBox'>
@@ -149,7 +170,42 @@ function ListBlock(props){
   );
 }
 
+function UpdateForm(props){
+  return (
+    <div className='formDiv'>
+      <form onSubmit={(event)=>{
+        event.preventDefault();
+        let target = event.target;
+        if(target.todo.value === null || target.todo.value === '' || target.todo.value === ' '){
+          alert('해야할 일을 입력해주세요.');
+          return;
+        }
+        
+        let selDate = new Date(target.date.value);
+        if(target.date.value === ''){
+          alert("시간을 입력해주세요.");
+          return;
+        }
+        let now = new Date();
+        if(selDate - now <= 0){
+          alert("현재 이후를 선택해주세요.")
+          return;
+        }
 
+      
+        let time = selDate.toTimeString().substring(0, 9);
+        props.onCalender(target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
+      }}>
+        <p>
+          <input type="submit" value="To Do List!"/>
+        </p>
+        <label htmlFor="todo"><input id="todo" type="text" name="todo" placeholder="To Do" value={props.todo}/></label><br/>
+        <label htmlFor="detail" ><textarea id="detail" name="detail" placeholder="Detail content" cols="22" rows="5" value={props.detail}></textarea></label><br/>
+        <label htmlFor="date">Date <input id="date" type="datetime-local" value={props.date + " " + props.time}/></label>
+      </form>
+    </div>
+  );
+}
 
 
 // 실행 앱
@@ -169,8 +225,14 @@ function App() {
     }
     setCalenders(newlis);
   }
-//
-  
+
+  let update = null;
+  let updateCal = null;
+  if(update){
+    <UpdateForm num={updateCal.id} todo={update.todo}
+     detail={update.detail} date={update.date} time={update.time}></UpdateForm>
+  }
+
 
   return (
     <div className="App">
@@ -188,7 +250,10 @@ function App() {
           }
         }
         setCalenders(newLis);
+      }} onUpdate={(id)=>{
+        updateCal = calenders[id];
       }}></List>
+      {update}
     </div>
   );
 }

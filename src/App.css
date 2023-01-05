@@ -3,7 +3,8 @@
 }
 
 body{
-  background-color: #f4f4f4;
+  /*background-color: #f4f4f4;*/
+  background-color: rgb(80, 80, 80);
 }
 
 .App {
@@ -15,7 +16,7 @@ input{
   transition: all 0.3s;
 }
 
-#formDiv{
+.formDiv{
   margin: 0 auto;
   width: 300px;
   height: 330px;
@@ -25,11 +26,11 @@ input{
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.09);
 }
 
-#formDiv input{
+.formDiv input{
   border: none;
 }
 
-#formDiv input[type=submit]{
+.formDiv input[type=submit]{
   transition: all 0.1s;
   margin-top: 40px;
   background-color: rgb(255,255,255);
@@ -42,13 +43,13 @@ input{
   border-radius: 10px;
 }
 
-#formDiv input[type=submit]:active{
+.formDiv input[type=submit]:active{
   background-color: rgb(104, 177, 255);
   border : 1px solid rgb(255, 255, 255);
   color: rgb(255, 255, 255);
 }
 
-#formDiv input[type=text], textarea{
+.formDiv input[type=text], textarea{
   width: 230px;
   margin : 15px auto;
   border : none;
@@ -82,7 +83,7 @@ input::placeholder , textarea::placeholder{
 .block{
   margin: 0 auto;
   transition: all 0.5s;
-  width: 425px;
+  width: 350px;
   height: 40px;
   background-color: #fff;
   word-wrap: break-word;
@@ -92,7 +93,7 @@ input::placeholder , textarea::placeholder{
 }
 
 .blockTop{
-  width: 425px;
+  width: 350px;
   height: 40px;
   line-height: 40px;
   position:sticky;
@@ -101,7 +102,7 @@ input::placeholder , textarea::placeholder{
 }
 
 .blockTopActive{
-  width: 425px;
+  width: 350px;
   height: 40px;
   line-height: 40px;
   color: #fff;
@@ -129,9 +130,21 @@ input::placeholder , textarea::placeholder{
   font-size: 15px;
 }
 
+.update{
+  cursor: pointer;
+  margin: 10px 20px;
+  line-height: 20px;
+  width: 60px;
+  height: 20px;
+  border: 1px solid rgb(104, 177, 255);
+  color : rgb(104, 177, 255);
+  font-size: 12px;
+  float : right;
+}
+
 .blockBottom{
   margin-top: 20px;
-  width: 425px;
+  width: 350px;
 }
 
 .dateBox{
