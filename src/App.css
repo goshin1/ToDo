@@ -3,8 +3,7 @@
 }
 
 body{
-  /*background-color: #f4f4f4;*/
-  background-color: rgb(80, 80, 80);
+  background-color: rgb(252, 252, 252);
 }
 
 .App {
@@ -170,4 +169,10 @@ input::placeholder , textarea::placeholder{
   border-radius: 10px;
   font-size: 13px;
   cursor : pointer;
+}
+
+.updateForm{
+  border: none;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
 }

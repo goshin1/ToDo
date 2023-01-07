@@ -112,6 +112,9 @@ function ListBlock(props){
         child.style.backgroundColor = "rgb(255, 49, 49)";
         child.children[0].style.backgroundColor = "rgb(255, 49, 49)";
         child.children[0].style.border = "1px solid rgb(234, 234, 234)";
+        child.children[2].style.backgroundColor = "rgb(255, 49, 49)";
+        child.children[2].style.border = "1px solid rgb(255, 255, 255)";
+        child.children[2].style.color = "rgb(255, 255, 255)";
       }
       else{
         if(current.style.height === "150px"){
@@ -172,7 +175,7 @@ function ListBlock(props){
 
 function UpdateForm(props){
   return (
-    <div className='formDiv'>
+    <div className='formDiv updateForm'>
       <form onSubmit={(event)=>{
         event.preventDefault();
         let target = event.target;
@@ -194,14 +197,14 @@ function UpdateForm(props){
 
       
         let time = selDate.toTimeString().substring(0, 9);
-        props.onCalender(target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
+        props.onUpdateCalender(props.num, target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
       }}>
         <p>
           <input type="submit" value="To Do List!"/>
         </p>
-        <label htmlFor="todo"><input id="todo" type="text" name="todo" placeholder="To Do" value={props.todo}/></label><br/>
-        <label htmlFor="detail" ><textarea id="detail" name="detail" placeholder="Detail content" cols="22" rows="5" value={props.detail}></textarea></label><br/>
-        <label htmlFor="date">Date <input id="date" type="datetime-local" value={props.date + " " + props.time}/></label>
+        <label htmlFor="todo"><input id="todo" type="text" name="todo" placeholder="To Do" defaultValue={props.todo}/></label><br/>
+        <label htmlFor="detail" ><textarea id="detail" name="detail" placeholder="Detail content" cols="22" rows="5" defaultValue={props.detail}></textarea></label><br/>
+        <label htmlFor="date">Date <input id="date" type="datetime-local"/></label>
       </form>
     </div>
   );
@@ -210,7 +213,7 @@ function UpdateForm(props){
 
 // 실행 앱
 function App() {
-  const [id, nextId] = useState(1);
+  const [id, nextId] = useState(0);
   const lis = [];
   const [calenders, setCalenders] = useState(lis);
   
@@ -226,13 +229,7 @@ function App() {
     setCalenders(newlis);
   }
 
-  let update = null;
-  let updateCal = null;
-  if(update){
-    <UpdateForm num={updateCal.id} todo={update.todo}
-     detail={update.detail} date={update.date} time={update.time}></UpdateForm>
-  }
-
+  const [update, setUpdate] = useState(null);
 
   return (
     <div className="App">
@@ -251,7 +248,21 @@ function App() {
         }
         setCalenders(newLis);
       }} onUpdate={(id)=>{
-        updateCal = calenders[id];
+        let updateCal = calenders[id];
+        setUpdate(<UpdateForm num={updateCal.id} todo={updateCal.todo}
+          detail={updateCal.detail} onUpdateCalender={(id, todo, detail, date, time)=>{
+            let updatelis = [];
+            for(let i = 0; i < calenders.length; i++){
+              if(id !== i){
+                updatelis.push(calenders[i]);
+              } else {
+                let up = {id : id, todo : todo, detail : detail, date : date, time : time};
+                updatelis.push(up);
+              }
+            }
+            setCalenders(updatelis);
+            setUpdate(null);
+          }}></UpdateForm>);
       }}></List>
       {update}
     </div>
