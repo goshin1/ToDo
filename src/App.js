@@ -71,7 +71,6 @@ function ListBlock(props){
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     ];
 
-    let colorCheck = false;
     let check = true;
 
     function timeOut(){
@@ -98,8 +97,8 @@ function ListBlock(props){
         check = false;
       }
     }
-
-    let timeMove = setInterval(timeOut, 500);
+    let timeMove = null;
+    
     
   return (
     <li className="block" key={props.num} onDoubleClick={(event)=>{
@@ -146,6 +145,7 @@ function ListBlock(props){
         <span>{props.todo}</span>
         <div className='update' onClick={()=>{
           props.onUpdate(props.num);
+          
         }} >Update</div>
       </div>
       <div className="blockBottom">
@@ -153,8 +153,10 @@ function ListBlock(props){
           <div className='dateSlide' onClick={event=>{
             if(event.currentTarget.style.marginTop !== '-40px'){
               event.currentTarget.style.marginTop = '-40px';
+              timeMove = setInterval(timeOut, 500);
             } else {
               event.currentTarget.style.marginTop = "0px";
+              clearInterval(timeMove);
             }
           }}>
             <div className='dateBlock'>
