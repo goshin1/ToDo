@@ -78,7 +78,7 @@ input::placeholder , textarea::placeholder{
   top: 0;
 }
 
-@media all and (min-width:1024px) and (max-width:1920px) { 
+@media all and (min-width:768px) and (max-width:1920px) { 
   .block{
     margin: 0 auto;
     transition: all 0.5s;
@@ -118,7 +118,7 @@ input::placeholder , textarea::placeholder{
   }
 }
 
-@media all and (min-width:480px) and (max-width:767px) {
+@media all and (min-width:0px) and (max-width:767px) {
   .block{
     margin: 0 auto;
     transition: all 0.5s;
