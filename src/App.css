@@ -75,40 +75,88 @@ input::placeholder , textarea::placeholder{
   margin-top: 50px;
   width: 100%;
   height: 100%;
-  background-color: #fff;
   top: 0;
 }
 
-.block{
-  margin: 0 auto;
-  transition: all 0.5s;
-  width: 350px;
-  height: 40px;
-  background-color: #fff;
-  word-wrap: break-word;
-  overflow:hidden;
-  position: relative;
-  z-index: 1;
+@media all and (min-width:1024px) and (max-width:1920px) { 
+  .block{
+    margin: 0 auto;
+    transition: all 0.5s;
+    width: 350px;
+    height: 40px;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow:hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  
+  .blockTop{
+    width: 350px;
+    height: 40px;
+    line-height: 40px;
+    position:sticky;
+    top : 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .blockTopActive{
+    width: 350px;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    position:sticky;
+    top : 0;
+    background-color: rgb(104, 177, 255);
+  }
+    
+  .blockBottom{
+    margin-top: 20px;
+    width: 350px;
+  }
 }
 
-.blockTop{
-  width: 350px;
-  height: 40px;
-  line-height: 40px;
-  position:sticky;
-  top : 0;
-  background-color: #fff;
-}
+@media all and (min-width:480px) and (max-width:767px) {
+  .block{
+    margin: 0 auto;
+    transition: all 0.5s;
+    width: 100%;
+    height: 40px;
+    background-color: #fff;
+    word-wrap: break-word;
+    overflow:hidden;
+    position: relative;
+    z-index: 1;
+  }
 
-.blockTopActive{
-  width: 350px;
-  height: 40px;
-  line-height: 40px;
-  color: #fff;
-  position:sticky;
-  top : 0;
-  background-color: rgb(104, 177, 255);
-}
+  
+  .blockTop{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    position:sticky;
+    top : 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .blockTopActive{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    position:sticky;
+    top : 0;
+    background-color: rgb(104, 177, 255);
+  }
+    
+  .blockBottom{
+    margin-top: 20px;
+    width: 100%;
+  }
+} 
 
 .check{
   margin: 10px 20px;
@@ -123,7 +171,6 @@ input::placeholder , textarea::placeholder{
 
 .blockTop span, .blockTopActive span{
   text-align: left;
-  width: 180px;
   float: left;
   display: block;
   font-size: 15px;
@@ -141,10 +188,6 @@ input::placeholder , textarea::placeholder{
   float : right;
 }
 
-.blockBottom{
-  margin-top: 20px;
-  width: 350px;
-}
 
 .dateBox{
   margin: 0 auto;
