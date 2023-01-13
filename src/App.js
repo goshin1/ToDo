@@ -52,7 +52,6 @@ function List(props){
                     props.onUpdate(id);
                   }}></ListBlock>)
   }
-
   return (
     <div id='list'>
       {lis}
@@ -62,18 +61,17 @@ function List(props){
 
 // 일정 블록
 function ListBlock(props){
+    console.log(props.date + " " + props.time);
     let left = {float : "left", marginLeft:"25px"};
     let right = {float : "right", marginRight : "25px"};
-    let [limitDate, setLimitDate] = useState(props.date);
-    let [limitTime, setLimitTime] = useState(props.time);
-
+    let [limitDate, setLimitDate] = useState(null);
+    let [limitTime, setLimitTime] = useState(null);
+    
+    let [check, setCheck] = useState(true);
     let months = [
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
     ];
-
-    let colorCheck = false;
-    let check = true;
-
+    
     function timeOut(){
       let now = new Date();
       let test = new Date(props.date + " " + props.time);
@@ -88,18 +86,20 @@ function ListBlock(props){
         const diffYear = Math.floor((diff / cYear));
         const diffMonth = Math.floor((diff / cMonth) % 12);
         const diffDay = Math.floor((diff / cDay) % months[test.getMonth()]);
-      
         const diffHour = Math.floor((diff / cHour) % 24);
         const diffMin = Math.floor((diff / cMin) % 60);
         const diffSec = Math.floor(diff / cSec % 60);
         setLimitDate(diffYear + ". " + diffMonth + ". " + diffDay);
         setLimitTime(diffHour + ":" + diffMin + ":" + diffSec);
       } else {
-        check = false;
+        setCheck(false);
+        setLimitDate(0 + ". " + 0 + ". " + 0);
+        setLimitTime(0 + ":" + 0 + ":" + 0);
       }
-    }
+  }
+  let timeMove = null;
 
-    let timeMove = setInterval(timeOut, 500);
+
     
   return (
     <li className="block" key={props.num} onDoubleClick={(event)=>{
@@ -112,21 +112,30 @@ function ListBlock(props){
         child.style.backgroundColor = "rgb(255, 49, 49)";
         child.children[0].style.backgroundColor = "rgb(255, 49, 49)";
         child.children[0].style.border = "1px solid rgb(234, 234, 234)";
+        child.children[2].style.backgroundColor = "rgb(255, 49, 49)";
+        child.children[2].style.border = "1px solid rgb(255, 255, 255)";
+        child.children[2].style.color = "rgb(255, 255, 255)";
       }
       else{
         if(current.style.height === "150px"){
           current.style.height = "40px";
           current.style.overflow = "hidden";
           child.className = "blockTop";
+          child.style.backgroundColor = "rgb(255, 255, 255)";
+          child.style.color = "rgb(104, 177, 255)";
           child.children[0].style.backgroundColor = "rgb(255, 255, 255)";
           child.children[0].style.border = "1px solid rgb(104, 177, 255)";
           child.children[2].style.backgroundColor = "rgb(255, 255, 255)";
           child.children[2].style.border = "1px solid rgb(104, 177, 255)";
           child.children[2].style.color = 'rgb(104, 177, 255)';
+          clearInterval(timeMove);
         } else {
+          timeOut();
           current.style.height = "150px";
           current.style.overflowY = "auto";
           child.className = "blockTopActive";
+          child.style.backgroundColor = "rgb(104, 177, 255)";
+          child.style.color = "rgb(255, 255, 255)";
           child.children[0].style.backgroundColor = "rgb(104, 177, 255)";
           child.children[0].style.border = "1px solid rgb(234, 234, 234)";
           child.children[2].style.backgroundColor = "rgb(104, 177, 255)";
@@ -142,6 +151,8 @@ function ListBlock(props){
         }}></div>
         <span>{props.todo}</span>
         <div className='update' onClick={()=>{
+          setCheck(true);
+          clearInterval(timeMove);
           props.onUpdate(props.num);
         }} >Update</div>
       </div>
@@ -149,9 +160,11 @@ function ListBlock(props){
         <div className='dateBox'>
           <div className='dateSlide' onClick={event=>{
             if(event.currentTarget.style.marginTop !== '-40px'){
+              timeOut();
               event.currentTarget.style.marginTop = '-40px';
             } else {
               event.currentTarget.style.marginTop = "0px";
+              
             }
           }}>
             <div className='dateBlock'>
@@ -172,7 +185,7 @@ function ListBlock(props){
 
 function UpdateForm(props){
   return (
-    <div className='formDiv'>
+    <div className='formDiv updateForm'>
       <form onSubmit={(event)=>{
         event.preventDefault();
         let target = event.target;
@@ -180,7 +193,6 @@ function UpdateForm(props){
           alert('해야할 일을 입력해주세요.');
           return;
         }
-        
         let selDate = new Date(target.date.value);
         if(target.date.value === ''){
           alert("시간을 입력해주세요.");
@@ -191,17 +203,15 @@ function UpdateForm(props){
           alert("현재 이후를 선택해주세요.")
           return;
         }
-
-      
         let time = selDate.toTimeString().substring(0, 9);
-        props.onCalender(target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
+        props.onUpdateCalender(props.num, target.todo.value, target.detail.value, selDate.toLocaleDateString(), time);
       }}>
         <p>
           <input type="submit" value="To Do List!"/>
         </p>
-        <label htmlFor="todo"><input id="todo" type="text" name="todo" placeholder="To Do" value={props.todo}/></label><br/>
-        <label htmlFor="detail" ><textarea id="detail" name="detail" placeholder="Detail content" cols="22" rows="5" value={props.detail}></textarea></label><br/>
-        <label htmlFor="date">Date <input id="date" type="datetime-local" value={props.date + " " + props.time}/></label>
+        <label htmlFor="todo"><input id="todo" type="text" name="todo" placeholder="To Do" defaultValue={props.todo}/></label><br/>
+        <label htmlFor="detail" ><textarea id="detail" name="detail" placeholder="Detail content" cols="22" rows="5" defaultValue={props.detail}></textarea></label><br/>
+        <label htmlFor="date">Date <input id="date" type="datetime-local"/></label>
       </form>
     </div>
   );
@@ -210,7 +220,7 @@ function UpdateForm(props){
 
 // 실행 앱
 function App() {
-  const [id, nextId] = useState(1);
+  const [id, nextId] = useState(0);
   const lis = [];
   const [calenders, setCalenders] = useState(lis);
   
@@ -226,13 +236,7 @@ function App() {
     setCalenders(newlis);
   }
 
-  let update = null;
-  let updateCal = null;
-  if(update){
-    <UpdateForm num={updateCal.id} todo={update.todo}
-     detail={update.detail} date={update.date} time={update.time}></UpdateForm>
-  }
-
+  const [update, setUpdate] = useState(null);
 
   return (
     <div className="App">
@@ -251,7 +255,29 @@ function App() {
         }
         setCalenders(newLis);
       }} onUpdate={(id)=>{
-        updateCal = calenders[id];
+        let updateCal = null;
+        for(let i = 0; i < calenders.length; i++){
+          if(calenders[i].id === id){
+            updateCal = calenders[i];
+            break;
+          }
+        }
+        setUpdate(<UpdateForm num={updateCal.id} todo={updateCal.todo}
+          detail={updateCal.detail} onUpdateCalender={(id, todo, detail, date, time)=>{
+            let updatelis = [];
+            for(let i = 0; i < calenders.length; i++){
+              if(calenders[i].id === id){
+                calenders[i].id = id;
+                calenders[i].todo = todo;
+                calenders[i].detail = detail;
+                calenders[i].date = date;
+                calenders[i].time = time;
+              }
+              updatelis.push(calenders[i]);
+            }
+            setCalenders(updatelis);
+            setUpdate(null);
+          }}></UpdateForm>);
       }}></List>
       {update}
     </div>
